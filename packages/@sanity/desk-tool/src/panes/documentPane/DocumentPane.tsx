@@ -9,7 +9,7 @@ import isNarrowScreen from '../../utils/isNarrowScreen'
 import windowWidth$ from '../../utils/windowWidth'
 import {ErrorPane} from '../errorPane'
 import {LoadingPane} from '../loadingPane'
-import {ChangesInspector} from './changesInspector'
+import {ChangesInspector} from './mockChangesInspector'
 import {HISTORY_BREAKPOINT_MIN} from './constants'
 import {Editor} from './editor'
 import {useDocumentHistory} from './history'
@@ -82,7 +82,7 @@ function DocumentPane(props: Props) {
 
   const documentId = getPublishedId(options.id)
   const typeName = options.type
-  const schemaType = schema.get(typeName)
+  const schemaType: Record<string, any> | null = schema.get(typeName)
 
   // Contexts
   const paneRouter = usePaneRouter()
@@ -126,7 +126,7 @@ function DocumentPane(props: Props) {
       value,
       isHistoryEnabled,
       isHistoryOpen,
-      isLiveEditEnabled: schemaType.liveEdit === true,
+      isLiveEditEnabled: Boolean(schemaType && schemaType.liveEdit === true),
       rev: selectedHistoryEvent && selectedHistoryEvent.rev,
       canShowHistoryList
     }) || []
